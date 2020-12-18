@@ -16,7 +16,7 @@ blueprint = Blueprint("api", __name__, url_prefix="/api")
 def games():
     """Games Activity."""
 
-    return {"msg": "ok"}
+    return {"msg": "not ok"}
 
 @blueprint.route("/games", methods=["POST"])
 def create_game_activity():
