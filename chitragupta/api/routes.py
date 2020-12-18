@@ -8,7 +8,7 @@ from flask import (
     url_for,
 )
 
-from chitragupta.api.game import create_game_start_activity
+from chitragupta.api.game import create_game_start_activity, mark_game_stop_activity
 
 blueprint = Blueprint("api", __name__, url_prefix="/api")
 
@@ -24,15 +24,15 @@ def create_game_activity():
     req_data = request.json
     current_app.logger.info('Creating new game activity')
 
-    action = req_data.action.lower()
+    activity = req_data['activity'].lower()
 
-    if action == "start":
+    if activity == "start":
         create_game_start_activity(req_data)
-    elif action == "stop":
-        return {"msg": "ok"}
+    elif activity == "stop":
+        mark_game_stop_activity(req_data)
     else:
-        current_app.logger.warn('Invalid action provided')
-        return jsonify({ "status": "BAD_REQUEST", "message": "Invalid action"}), 400
+        current_app.logger.warn('Invalid activity provided')
+        return jsonify({ "status": "BAD_REQUEST", "message": "Invalid activity"}), 400
 
 
     return {"msg": "ok"}
