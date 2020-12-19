@@ -8,4 +8,4 @@ COPY . /usr/src/app
 
 RUN pipenv install --system --deploy --ignore-pipfile
 
-CMD [ "gunicorn", "--bind 0.0.0.0:5000", "-k gevent", "chitragupta.app:create_app()"]
+CMD [ "gunicorn", "--bind 0.0.0.0:5000", "chitragupta.app:create_app()"]

@@ -17,7 +17,6 @@ environs = "*"
 psycopg2-binary = "*"
 sentry-sdk = {extras = ["flask"], version = "*"}
 gunicorn = "*"
-gevent = "*"
 
 [requires]
 python_version = "3.9"
