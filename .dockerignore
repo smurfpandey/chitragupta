@@ -1,1 +1,8 @@
+# Ignore everything
+**
 __pycache__
+
+# ... except for dependencies and source
+!Pipfile
+!Pipfile.lock
+!chitragupta/

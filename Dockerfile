@@ -1,14 +1,35 @@
-FROM arm32v7/python:3.7-slim-buster
+FROM arm32v7/python:3.7-slim-buster as base
 
-# RUN apk update && apk add postgresql-dev gcc python3-dev musl-dev
+# Setup env
+ENV LANG C.UTF-8
+ENV LC_ALL C.UTF-8
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONFAULTHANDLER 1
+
+# Install runtime dependencies
 RUN apt update && apt install -y libpq5
+
+FROM base AS python-deps
+
+# Install pipenv and compilation dependencies
 RUN pip install pipenv
 
-# set work directory
-WORKDIR /usr/src/app
+# Install python dependencies in /.venv
+COPY Pipfile .
+COPY Pipfile.lock .
+RUN PIPENV_VENV_IN_PROJECT=1 pipenv install --deploy --skip-lock
 
-COPY . /usr/src/app
+FROM base AS runtime
 
-RUN pipenv install --system --deploy --skip-lock
+# Copy virtual env from python-deps stage
+COPY --from=python-deps /.venv /.venv
+ENV PATH="/.venv/bin:$PATH"
 
+# Create and switch to a new user
+WORKDIR /usr/app
+
+# Install application into container
+COPY . .
+
+# Run the application
 CMD [ "gunicorn", "-b 0.0.0.0:5000", "chitragupta.app:create_app()"]
