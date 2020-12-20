@@ -3,10 +3,16 @@ name = "pypi"
 url = "https://pypi.org/simple"
 verify_ssl = true
 
+[[source]]
+name = "piwheels"
+url = "https://www.piwheels.org/simple"
+verify_ssl = true
+
 [dev-packages]
 pylint = "*"
 pylint-flask-sqlalchemy = "*"
 autopep8 = "*"
+psycopg2-binary = {version="*", index="pypi"}
 
 [packages]
 flask-caching = "*"
@@ -14,7 +20,7 @@ flask-migrate = "*"
 flask-sqlalchemy = "*"
 flask = "*"
 environs = "*"
-psycopg2-binary = "*"
+psycopg2-binary = {version="*", index="piwheels"}
 sentry-sdk = {extras = ["flask"], version = "*"}
 gunicorn = "*"
 
