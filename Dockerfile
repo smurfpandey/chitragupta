@@ -10,4 +10,4 @@ COPY . /usr/src/app
 
 RUN pipenv install --system --deploy --skip-lock --extra-index-url https://www.piwheels.org/simple
 
-CMD [ "gunicorn", "-b 0.0.0.0:5000", "chitragupta.app:app"]
+CMD [ "gunicorn", "-b 0.0.0.0:5000", "chitragupta.app:create_app()"]
