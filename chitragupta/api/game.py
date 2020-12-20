@@ -50,3 +50,8 @@ def mark_game_stop_activity(game_activity):
 
     db.session.commit()
     
+def get_all_games():
+    """Get All Games"""
+    results = Game.query.with_entities(Game.id,
+                Game.name, Game.total_play_time).all()
+    return [r._asdict() for r in results]

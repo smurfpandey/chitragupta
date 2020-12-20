@@ -66,6 +66,6 @@ def register_shellcontext(app):
 def configure_logger(app):
     """Configure loggers."""
     handler = logging.StreamHandler(sys.stdout)
-    app.logger.setLevel(app.config['LOG_LEVEL'])
+    app.logger.setLevel(app.config['LOG_LEVEL'].upper())
     if not app.logger.handlers:
         app.logger.addHandler(handler)

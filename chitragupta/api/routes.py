@@ -8,15 +8,14 @@ from flask import (
     url_for,
 )
 
-from chitragupta.api.game import create_game_start_activity, mark_game_stop_activity
+from chitragupta.api.game import create_game_start_activity, mark_game_stop_activity, get_all_games
 
 blueprint = Blueprint("api", __name__, url_prefix="/api")
 
 @blueprint.route("/games", methods=["GET"])
 def games():
-    """Games Activity."""
-
-    return {"msg": "not ok"}
+    """Get All Games"""
+    return {"games": get_all_games()}
 
 @blueprint.route("/games", methods=["POST"])
 def create_game_activity():
