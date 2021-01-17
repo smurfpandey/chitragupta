@@ -2,10 +2,9 @@
 """API routes."""
 from flask import (
     Blueprint,
-    current_app,    
+    current_app,
     jsonify,
     request,
-    url_for,
 )
 
 from chitragupta.api.game import create_game_start_activity, mark_game_stop_activity, get_all_games
@@ -19,12 +18,10 @@ def games():
 
 @blueprint.route("/games", methods=["POST"])
 def create_game_activity():
-    """Create a Game activity."""    
+    """Create a Game activity."""
     req_data = request.json
-    current_app.logger.info('Creating new game activity')
-
     activity = req_data['activity'].lower()
-
+    current_app.logger.info('Creating new game activity: ' + activity)
     if activity == "start":
         create_game_start_activity(req_data)
     elif activity == "stop":

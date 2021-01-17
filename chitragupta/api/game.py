@@ -2,9 +2,11 @@
 from datetime import datetime
 
 from flask import current_app
+from sqlalchemy import desc
 
 from chitragupta.extensions import db
 from chitragupta.models.game import Game, GamePlayActivity
+
 
 def create_game_start_activity(game_activity):
     """Create new game play activity"""
@@ -29,6 +31,7 @@ def create_game_start_activity(game_activity):
 
     return True
 
+
 def mark_game_stop_activity(game_activity):
     """Mark previous game play as complete"""
     game_name = game_activity['game']['Name']
@@ -36,10 +39,12 @@ def mark_game_stop_activity(game_activity):
     if this_game is None:
         current_app.logger.info('Game not found')
         return False
-    
+
     # Find a latest start activity for this game
-    this_play_activity = GamePlayActivity.query.filter_by(game=this_game.id,stop_datetime=None).first()    
-    
+    this_play_activity = GamePlayActivity.query.filter_by(
+        game=this_game.id, stop_datetime=None).order_by(
+            desc(GamePlayActivity.start_datetime)).first()
+
     if this_play_activity is None:
         current_app.logger.info('No in-game activity found')
         return False
@@ -49,9 +54,10 @@ def mark_game_stop_activity(game_activity):
     this_play_activity.duration_in_sec = game_activity['elapsed_seconds']
 
     db.session.commit()
-    
+
+
 def get_all_games():
     """Get All Games"""
     results = Game.query.with_entities(Game.id,
-                Game.name, Game.total_play_time).all()
+                                       Game.name, Game.total_play_time).all()
     return [r._asdict() for r in results]
