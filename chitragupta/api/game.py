@@ -42,7 +42,7 @@ def mark_game_stop_activity(game_activity):
 
     # Find a latest start activity for this game
     this_play_activity = GamePlayActivity.query.filter_by(
-        game=this_game.id, stop_datetime=None).order_by(
+        game=this_game.id, stop_datetime=None, duration_in_sec=0).order_by(
             desc(GamePlayActivity.start_datetime)).first()
 
     if this_play_activity is None:

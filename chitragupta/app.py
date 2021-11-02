@@ -1,15 +1,28 @@
 # -*- coding: utf-8 -*-
 """The app module, containing the app factory function."""
 import logging
+from os import environ
 import sys
 
 from flask import Flask, render_template
+import sentry_sdk
+from sentry_sdk.integrations.flask import FlaskIntegration
+from sentry_sdk.integrations.sqlalchemy import SqlalchemyIntegration
 
 from chitragupta import api
 from chitragupta.extensions import (
     cache,
     db,
     migrate,
+)
+
+# Initialize Sentry
+sentry_sdk.init(
+    environ.get('SENTRY_DSN'),
+    integrations=[
+        FlaskIntegration(),
+        SqlalchemyIntegration()
+    ]
 )
 
 def create_app(config_object="chitragupta.config"):
